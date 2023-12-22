@@ -10,30 +10,30 @@ import json
 phonebook = {}
 commands = ["all", "exit", "add", "save", "search", "del", "change"]
 
-new_contact = {"Katya Borisova": 
-             { "phones": [64591236],
-              "email": "frty@gmail.com",
-              "birthday": "07.12.1977"
-              }
-              }
 
-def all_phonebook(book):
+def all(book):
     for name, values in book.items():
-        print(name, values)
-        print()
+        print(name, str(values))
 
 def search(book):
-    for name in book.items():
-        name = input('Put contact name: ')
-        if name == name:
-            print(f"{name}: ", book.get(name))
-        else:
-            print(f"{name} does not exist in your phonebook")
-        return
+    el = input('Put contact name: ')
+    try:
+        for k, v in book.items():
+            if el in k:
+                book.get(k, v)
+                print(k, str(v))
+    except:
+        print("This name does not exist in your phonebook")
 
-def add(new_contact):
-    for key,value in new_contact.items():
-        phonebook[key] = value
+def add(book):
+    key_up = {"Masha Alexeeva": 
+             { "phones": [87649321, 74536129],
+              "email": "mnbvc@gmail.com",
+              "birthday": "25.09.1992"}
+              }
+    if key_up not in book.items():
+        book.update(key_up)
+        print(all(book))
 
 # def change(book):
 #     for name, values in book.items():
@@ -41,7 +41,10 @@ def add(new_contact):
 #         
 
 def delete(book):
-    contact = book.pop(input('Put contact name: '))
+    # contact = book.pop(input('Put contact name: '))
+    contact = input('Put contact name: ')
+    if contact in phonebook:
+        del phonebook[contact]
     print(f"Contact {contact} was deleted")
 
 def save():
@@ -77,7 +80,7 @@ print("You have a commands: ", *commands, sep=", ")
 while True:
     command = input("Put command: ")
     if command == "all":
-        all_phonebook(phonebook)
+        all(phonebook)
     elif command == "exit":
         save()
         print("Goodbye!")
@@ -86,9 +89,8 @@ while True:
         save()
         print("Your contacts were succssessfuly saved in file 'phonebook.json'")
     elif command == "add":
-        add(new_contact)
+        add(phonebook)
         save()
-        print(phonebook)
     elif command == "load":
         load()
         print("Your contacts were succssessfuly loaded in file 'phonebook.json'")
